@@ -108,16 +108,16 @@
 		\setissueslinkurl{\GitIssuesURL} % Set the actual URL
 		\fi
 	\fi
-	\fancyfoot[C]{\EngGer{from}{von} \theauthor\ -- Mail: \email{\theemail}}
+	% \fancyfoot[C]{\EngGer{from}{von} \theauthor\ -- Mail: \email{\theemail}}
 	}
-	\renewcommand{\headrulewidth}{0.0pt} %obere Linie ausblenden
-	\renewcommand{\footrulewidth}{0.1pt} %obere Linie ausblenden
+	% \renewcommand{\headrulewidth}{0.0pt} %obere Linie ausblenden
+	% \renewcommand{\footrulewidth}{0.1pt} %obere Linie ausblenden
 	
-	\newcommand{\issueslinkurl}{https://github.com/latex4ei/Allgemein/issues} % Default URL placeholder
-	\newcommand{\setissueslinkurl}[1]{\renewcommand{\issueslinkurl}{#1}}
+	% \newcommand{\issueslinkurl}{https://github.com/latex4ei/Allgemein/issues} % Default URL placeholder
+	% \newcommand{\setissueslinkurl}[1]{\renewcommand{\issueslinkurl}{#1}}
 
-	\fancyfoot[R]{\EngGer{Last revised}{Stand}: \themydate \qquad \thepage/\pageref{LastPage}}
-	\fancyfoot[L]{Homepage: \url{\thewebsite} -- \EngGer{Please \href{\issueslinkurl}{report} mistakes \emph{immediately}}{Fehler bitte \emph{sofort} \href{\issueslinkurl}{melden}}.}
+	% \fancyfoot[R]{\EngGer{Last revised}{Stand}: \themydate \qquad \thepage/\pageref{LastPage}}
+	% \fancyfoot[L]{Homepage: \url{\thewebsite} -- \EngGer{Please \href{\issueslinkurl}{report} mistakes \emph{immediately}}{Fehler bitte \emph{sofort} \href{\issueslinkurl}{melden}}.}
 
 
 % Title
