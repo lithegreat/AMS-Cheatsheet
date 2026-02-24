@@ -1,29 +1,29 @@
-# LaTeX4EI Cheatsheet Template
+# Analog and Mixed-Signal Circuit Design — Cheatsheet
 
-[![Actions Status](https://github.com/latex4ei/CheatsheetTemplate/workflows/CI/badge.svg)](https://github.com/latex4ei/CheatsheetTemplate)
-[![Join the chat at https://gitter.im/LaTeX4Ei/Lobby](https://badges.gitter.im/LaTeX4Ei/Lobby.svg)](https://gitter.im/LaTeX4Ei/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![CI](https://github.com/lithegreat/AMS-Cheatsheet/actions/workflows/ci.yml/badge.svg)](https://github.com/lithegreat/AMS-Cheatsheet/actions/workflows/ci.yml)
+[![Latest PDF](https://img.shields.io/github/v/release/lithegreat/AMS-Cheatsheet?label=latest%20PDF)](https://github.com/lithegreat/AMS-Cheatsheet/releases/tag/latest)
 
-Write beautiful latex cheat sheets with minimal effort.
+A compact LaTeX cheatsheet for the **Analog and Mixed-Signal Circuit Design** course, built on the [latex4ei](https://github.com/latex4ei/latex4ei-packages) template.
 
-## Formelsammlung für Latex4ei
+## Download
 
-**Required custom Package on GitHub:** [LaTeX4Ei](https://github.com/latex4ei/latex4ei-packages)
+The latest compiled PDF is automatically built and published on every push to `main`.
+**[Download latest PDF](https://github.com/lithegreat/AMS-Cheatsheet/releases/tag/latest)**
 
-Public Version: [latex4ei.de](http://latex4ei.de)
+## Content
 
-## Optional: Build with CMake
+1. **Semiconductor process and device basics** — MOSFET physics, I/V characteristics, small-signal model, basic stages (CS/CD/CG), body effect, noise, mismatch, capacitors, bipolar transistors, current mirrors
+2. **Amplifiers** — Op-amp design, differential pairs, folded cascode, two-stage op-amp, frequency response, compensation, noise analysis, gain boosting
+3. **References & Comparators** — Bandgap references, linear regulators, switches, comparators, clocked comparators, offset compensation
 
-Download [UseLaTeX.cmake](https://cmake.org/Wiki/CMakeUserUseLATEX) and move to `/usr/share/cmake-X.X/Modules/.`
+## Build locally
 
-##### Steps to build:
+Requires a LaTeX distribution with `UseLATEX.cmake`. The CI uses the `makeappdev/uselatex` Docker image.
 
 ```shell
-mkdir build
-cd build
+mkdir build && cd build
 cmake ..
 make
 ```
-## Disclaimer
 
-After changing the repository name or transfering ownership, run the "Update README and LaTeX Build" workflow from the Actions tab and merge the generated pull request.
-Make sure the `.tex` file has the same name as the repository in order for it to build correctly!
+The compiled `AMS.pdf` will be placed in the `build/` directory.
