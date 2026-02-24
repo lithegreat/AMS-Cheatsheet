@@ -52,13 +52,17 @@ jobs:
           name: build
           path: build/*.pdf
 
-      # Create/update a rolling "latest" release with the built PDF
-      - name: Release latest PDF
+      # Create a dated release with the built PDF
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Release PDF
         if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: latest
-          name: Latest Build
+          tag_name: build-${{ steps.date.outputs.date }}-${{ github.run_number }}
+          name: Build ${{ steps.date.outputs.date }}
           body: |
             Automatically built from commit ${{ github.sha }}.
           prerelease: false
