@@ -61,6 +61,6 @@ jobs:
           name: Latest Build
           body: |
             Automatically built from commit ${{ github.sha }}.
-          prerelease: true
+          prerelease: false
           files: build/*.pdf
 
