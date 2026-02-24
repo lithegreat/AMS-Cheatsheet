@@ -191,9 +191,11 @@
         \item Differential pair with active load (OTA, rough):
         \[ A_v\approx g_m\,r_{out},\quad r_{out}\approx r_{o,n}\parallel r_{o,p}\parallel R_L \]
         \item Common-mode gain and rejection:
-        \[ A_{cm}=\frac{v_{od}}{v_{icm}},\quad \mathrm{CMRR}=\left|\frac{A_{vd}}{A_{cm}}\right|,\quad \mathrm{CMRR}_{dB}=20\log_{10}(\mathrm{CMRR}) \]
+        \[ A_{cm}=\frac{v_{od}}{v_{icm}},\quad \mathrm{CMRR}=\left|\frac{A_{vd}}{A_{cm}}\right| \]
+        \[ \mathrm{CMRR}_{dB}=20\log_{10}(\mathrm{CMRR}) \]
         \item Input common-mode range (resistive-load pair):
-        \[ V_{in,CM,min}\approx V_{GS}+V_{DS,sat,tail},\quad V_{in,CM,max}\approx V_{out,CM}-V_{DS,sat}-V_{GS} \]
+        \[ V_{in,CM,min}\approx V_{GS}+V_{DS,sat,tail} \]
+        \[ V_{in,CM,max}\approx V_{out,CM}-V_{DS,sat}-V_{GS} \]
         \item Output common-mode with resistive loads:
         \[ V_{out,CM}\approx V_{DD}-\frac{I_{SS}}{2}R_D \]
         \item CM$\to$DM gain (finite tail $R_S$, $g_m$ mismatch $\Delta g_m$):
