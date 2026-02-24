@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
-    branches: [main, master]
+    branches: [main]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -27,6 +27,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container: makeappdev/uselatex:latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -50,4 +52,15 @@ jobs:
           name: build
           path: build/*.pdf
 
+      # Create/update a rolling "latest" release with the built PDF
+      - name: Release latest PDF
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest Build
+          body: |
+            Automatically built from commit ${{ github.sha }}.
+          prerelease: true
+          files: build/*.pdf
 
