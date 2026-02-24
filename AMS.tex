@@ -12,7 +12,7 @@
 % ======================================================================
 
 % possible options: color/nocolor, english/german, threecolumn
-% defaults: color, english
+% defaults: color, english, fourcolumn
 \documentclass[english]{latex4ei/latex4ei_sheet}
 
 % set document information
@@ -48,9 +48,10 @@
         \[ \text{ON: }V_{GS}>V_{th},\quad \text{sat.: }V_{DS}\ge V_{OV},\quad \text{triode: }V_{DS}<V_{OV} \]
         \item Small-signal parameters at bias point:
         \[ g_m=\frac{\partial I_D}{\partial V_{GS}}\approx \frac{2I_D}{V_{OV}},\quad g_{ds}\approx \lambda I_D,\quad r_o=\frac{1}{g_{ds}} \]
-        \item Practical: larger $W/L\Rightarrow$ larger $g_m$ at same $V_{OV}$; larger $L\Rightarrow$ larger $r_o$ (smaller $\lambda$).
-        \item n-mos has usually a higher charge carrier mobility.
-        \item PMOS input stage is used for low input common mode voltage.
+        \item Also: $g_m = K_n\frac{W}{L}V_{OV} = \sqrt{2K_n\frac{W}{L}I_D}$.
+        Weak/mod.\ inv.: $g_m \approx \frac{I_D}{nV_T}$, $n\!\approx\!1\!\ldots\!1.5$, $nV_T\!\approx\!60\,\mathrm{mV}$ at $300\,\mathrm{K}$.
+        \item Diode-connected ($V_{DS}\!=\!V_{GS}$): always in sat.\ when ON.
+        \item $C_{ox}=\varepsilon_0\varepsilon_{r}/d_{ox}$. NMOS: higher $\mu$. PMOS: lower 1/f noise, no body effect (own n-well), used for low input CM.
     \end{itemize}
 
 
@@ -92,7 +93,6 @@
         \[ V_{out}=V_{DD}-R\cdot \frac{1}{2}K_n\frac{W}{L}(V_{in}-V_{th})^2,\quad V_{in,min}=V_{th} \]
         \item CS input voltage range for saturation:
         \[ V_{in,max} = -\frac{1}{R K_n \frac{W}{L}} + \sqrt{\left(\frac{1}{R K_n \frac{W}{L}}\right)^2 + \frac{2 V_{DD}}{R K_n \frac{W}{L}}} + V_{th} \]
-        \item Ring oscillator period with $N$ stages and delay $T$: $2NT$.
     \end{itemize}
 
 
@@ -111,6 +111,8 @@
         \[ I_{out}=I_{in}\cdot \frac{(W/L)_2}{(W/L)_1} \]
         \item Output compliance (PMOS mirror example):
         \[ V_{SD,2}>V_{OV,2}\ \Rightarrow\ V_{out}<V_{DD}-V_{OV,2} \]
+        \item Output compliance (NMOS mirror example):
+        \[ V_{DS,2}>V_{OV,2}\ \Rightarrow\ V_{out}>V_{OV,2} \]
         \item With CLM, ratio depends on output voltage:
         \[ \frac{I_{out}}{I_{in}}=\frac{(W/L)_2}{(W/L)_1}\cdot\frac{1+\lambda V_{out}}{1+\lambda V_{DS,1}} \]
         \item Standard mirror output resistance:
@@ -120,17 +122,10 @@
         \item Trade-off: much better accuracy/output resistance, but higher minimum output voltage (reduced swing).
         \item Current transfer function (small signal):
         \[ \frac{i_{out}}{i_{in}} = \frac{g_{m2}}{g_{m1} + g_{ds1}} \]
+        \item Cascode bias: $V_b = V_{GS,1}+V_{GS,4}=2V_{GS}$ (matched).
+        \item Cascode $V_{out,min}=2V_{DS,sat}+V_{th}$ (standard); $2V_{DS,sat}$ (wide-swing).
     \end{itemize}
 
-
-    \subsection{Integrated Resistors \& Capacitors}
-    \begin{itemize}
-        \item \textbf{Resistors:} Polysilicon (high sheet resistance, good matching, low voltage coefficient), N-well/P-well (high resistance, high voltage/temp coefficients), Diffusion (low resistance).
-        \item \textbf{Resistor Layout:} Use unit elements, dummy strips, and common-centroid layout to minimize mismatch.
-        \item \textbf{Capacitors:} MIM (Metal-Insulator-Metal, high linearity, low parasitics), MOM (Metal-Oxide-Metal, uses lateral fringing fields, high density), MOS (high density, highly non-linear, used for decoupling).
-        \item \textbf{Capacitor Layout:} Common-centroid, unit elements. Bottom plate has large parasitic capacitance to substrate (connect to AC ground).
-        \item \textbf{Inductors:} Spiral inductors in top metal layers (thick metal to reduce series resistance). Low Q-factor due to substrate losses.
-    \end{itemize}
 
     \subsection{Resistive/Capacitive Loading \& Corners}
     CS with output load $R\parallel 1/(sC)$:
@@ -160,6 +155,10 @@
         \[ f_c=\frac{K_f g_m}{4kT\gamma C_{ox}WL} \]
         \item Input-referred noise of CS with active load (thermal):
         \[ \overline{v_{n,in}^2}=4kT\gamma\left(\frac{1}{g_{m1}}+\frac{g_{m2}}{g_{m1}^2}\right) \]
+        \item Input-referred concept (generic):
+        \[ \overline{v_{n,in}^2}=\frac{\overline{v_{n,out}^2}}{|A_v|^2},\quad \overline{i_{n,in}^2}=\frac{\overline{i_{n,out}^2}}{|A_i|^2} \]
+        \item Integrate PSD over band $[f_1,f_2]$:
+        \[ \overline{x_n^2}=\int_{f_1}^{f_2}S_x(f)\,df,\quad \int_{f_1}^{f_2}\frac{1}{f}df=\ln\!\frac{f_2}{f_1} \]
         \item Noise design rule: maximize signal-device $g_{m1}$ (large $W/L$), minimize load-device $g_{m2}$ (small $W/L$) under power/headroom constraints.
         \item Capacitor mismatch (1$\sigma$):
         \[ \sigma_C/C\approx \frac{K_C}{\sqrt{WL}} \]
@@ -167,15 +166,6 @@
         \item PMOS transistors show less 1/f noise.
     \end{itemize}
 
-
-    \subsection{Bipolar Transistors \& Manufacturing Issues}
-    \begin{itemize}
-        \item \textbf{BJT vs. MOSFET:} BJTs have higher $g_m$ for the same current ($g_m = I_C / V_T$), better matching, and lower 1/f noise. MOSFETs have infinite input impedance and zero DC gate current.
-        \item \textbf{BJT Small-Signal:} $g_m = I_C / V_T$, $r_\pi = \beta / g_m$, $r_o = V_A / I_C$.
-        \item \textbf{Layout:} Common-centroid layout for differential pairs and current mirrors to cancel linear gradients. Dummy devices at the edges to avoid edge effects.
-        \item \textbf{Analog Scaling:} Scaling down technology reduces $V_{DD}$, which reduces voltage headroom. $g_m r_o$ (intrinsic gain) decreases due to short-channel effects (CLM, DIBL).
-        \item \textbf{Parasitics:} Parasitic capacitance from routing and device junctions limits bandwidth. Parasitic resistance causes IR drops and thermal noise.
-    \end{itemize}
 
 \section{Amplifiers}
 
@@ -188,6 +178,41 @@
         \item \textbf{Bandwidth:} Closed-loop bandwidth $\omega_{CL} = \omega_{OL} \cdot (1 + A_0\beta) \approx \beta \cdot \text{GBW}$.
         \item \textbf{Impedances:} Series feedback increases impedance by $(1+A\beta)$. Shunt feedback decreases impedance by $(1+A\beta)$.
         \item \textbf{Non-Idealities:} Finite gain, finite bandwidth, offset voltage ($V_{OS}$), input bias currents, finite slew rate, noise.
+    \end{itemize}
+
+    \subsection{Differential Pair \& OTA (Exam Core)}
+    Symmetric differential excitation: $v_{in1}=+v_{id}/2,\ v_{in2}=-v_{id}/2$.
+    \begin{itemize}
+        \item Half-circuit rule (ideal tail source): source node is small-signal virtual ground.
+        \item Resistive-load differential pair:
+        \[ v_{od}=v_{out1}-v_{out2}\approx -g_mR_D\,v_{id},\quad A_{vd}\approx -g_mR_D \]
+        \item Single-ended output from one branch:
+        \[ A_v\approx -\frac{1}{2}g_mR_D \]
+        \item Differential pair with active load (OTA, rough):
+        \[ A_v\approx g_m\,r_{out},\quad r_{out}\approx r_{o,n}\parallel r_{o,p}\parallel R_L \]
+        \item Common-mode gain and rejection:
+        \[ A_{cm}=\frac{v_{od}}{v_{icm}},\quad \mathrm{CMRR}=\left|\frac{A_{vd}}{A_{cm}}\right|,\quad \mathrm{CMRR}_{dB}=20\log_{10}(\mathrm{CMRR}) \]
+        \item Input common-mode range (resistive-load pair):
+        \[ V_{in,CM,min}\approx V_{GS}+V_{DS,sat,tail},\quad V_{in,CM,max}\approx V_{out,CM}-V_{DS,sat}-V_{GS} \]
+        \item Output common-mode with resistive loads:
+        \[ V_{out,CM}\approx V_{DD}-\frac{I_{SS}}{2}R_D \]
+        \item CM$\to$DM gain (finite tail $R_S$, $g_m$ mismatch $\Delta g_m$):
+        \[ A_{CM\to DM}=\frac{\Delta g_m\, R}{1+(g_{m1}+g_{m2})R_S} \]
+        \item $\mathrm{CMRR}=\left|\frac{A_{vd}}{A_{CM\to DM}}\right|$;\quad $\mathrm{PSRR}=\left|\frac{A_v}{A_{v,\mathrm{supply}}}\right|$.
+        \item Input-referred offset ($\Delta V_{th}$, $\Delta K$ mismatch):
+        \[ V_{OS}\approx \Delta V_{th} - \frac{\Delta K}{2K}V_{OV} = \Delta V_{th} - \frac{\Delta K}{K}\frac{I_D}{g_m} \]
+        Low offset: large $g_m/I_D$ (large $W/L$) for input pair, small $g_m/I_D$ for mirrors.
+    \end{itemize}
+
+    \subsection{Output Stages (Class A/B, Quick Checks)}
+    \begin{itemize}
+        \item Class-A common-source output stage:
+        \[ r_{out}\approx \frac{1}{g_{ds,n}+g_{ds,p}}\approx \frac{1}{(\lambda_n+\lambda_p)I_B} \]
+        \item To reduce $r_{out}$: increase $I_B$ (trade-off: static power $P_Q\approx V_{DD}I_B$).
+        \item Resistive load gain limit:
+        \[ A_v\approx g_m\left(r_{o,n}\parallel r_{o,p}\parallel R_L\right) \]
+        \item Class-B push-pull: each device conducts about half-cycle; near zero crossing crossover distortion appears.
+        \item Class-AB biasing reduces crossover distortion at small static current penalty.
     \end{itemize}
 
     \subsection{2nd-Order Amplifier Filters (Biquad LP)}
@@ -218,7 +243,9 @@
         \[ \frac{V_{out}}{V_{in}}=-\frac{1}{R_1C_1s}\Rightarrow k_1=\frac{1}{R_1C_1} \]
         \item Lossy integrator ($R_2\parallel C_1$ feedback):
         \[ \frac{V_{out}}{V_{in}}=-\frac{1/(R_1C_1)}{s+1/(R_2C_1)},\quad \alpha=\frac{R_1}{R_2} \]
-        \item Tow-Thomas practical tuning: $Q$ and gain can be adjusted mostly independently by resistor ratios.
+        \item Full Tow-Thomas biquad (with feedback $R_F$):
+        \[ \omega_n\!=\!\frac{1}{\sqrt{R_3R_FC_1C_2}},\; Q\!=\!R_2\!\sqrt{\frac{C_1}{R_3R_FC_2}},\; G\!=\!-\frac{R_F}{R_1} \]
+        $Q$ and gain $G$ are independently tunable via $R_2$ and $R_1$.
     \end{itemize}
 
 
@@ -268,16 +295,6 @@
         \item \textbf{Offset Reduction (Auto-Zeroing):} Samples the offset during a reset phase and subtracts it during the amplification phase. Increases baseband noise due to noise aliasing (folding).
     \end{itemize}
 
-    \subsection{OpAmp Design Examples \& Rules of Thumb}
-    \begin{itemize}
-        \item \textbf{Systematic Offset:} Ensure $V_{DS}$ of current mirror devices are equal. E.g., in a two-stage OpAmp, size the second stage such that $V_{GS6} = V_{DS4}$ (where M4 is the active load of the diff pair).
-        \item \textbf{Cascaded Systems:} If System A (gain $A_1$, pole $\omega_{p1}$) is followed by System B (gain $A_2$, pole $\omega_{p2}$), the total DC gain is $A_1 \cdot A_2$. The overall bandwidth is dominated by the lowest pole.
-        \item \textbf{Ideal OpAmp Assumptions:} Infinite gain ($A \to \infty$), infinite input impedance ($R_{in} \to \infty$), zero output impedance ($R_{out} \to 0$), infinite bandwidth.
-        \item \textbf{Integrator vs. Proportional:} In an inverting OpAmp with $R_1, R_2, C_1$ (where $C_1$ is parallel to $R_2$), for $\omega < \omega_c = 1/(R_2 C_1)$, it acts as a proportional amplifier (gain $-R_2/R_1$). For $\omega > \omega_c$, it acts as an integrator (gain decreases at $-20$ dB/dec).
-        \item \textbf{Sizing for Noise:} To minimize thermal noise in a diff pair, maximize $g_m$ of the input pair (large $W/L$, large $I_D$) and minimize $g_m$ of the active load (small $W/L$, large $L$).
-        \item \textbf{Sizing for Mismatch:} To minimize threshold voltage mismatch ($\sigma_{\Delta V_{th}} \propto 1/\sqrt{WL}$), use large area ($W \cdot L$) for critical matching devices (e.g., input pair, current mirrors).
-    \end{itemize}
-
 \section{References \& comparators}
 
     \subsection{Bandgap References (Low-Voltage)}
@@ -306,16 +323,26 @@
         \item \textbf{Basics:} Uses an error amplifier to compare a fraction of the output voltage with a reference voltage ($V_{ref}$) and drives a pass transistor to regulate $V_{out}$.
         \item \textbf{Output Voltage:} $V_{out} = V_{ref} \cdot (1 + R_1/R_2)$, where $R_1, R_2$ form the feedback divider.
         \item \textbf{Dropout Voltage:} Minimum $V_{DS}$ of the pass transistor required to maintain regulation. PMOS pass devices allow low dropout ($V_{DS,sat}$).
+        \item \textbf{Pass-device sizing at }$I_{out,max}$ (PMOS, sat. model):
+        \[ \frac{W}{L}\ge \frac{2I_{out,max}}{k_pV_{OV}^2} \]
+        \item \textbf{Load limit from current limit:}
+        \[ R_{L,min}=\frac{V_{out}}{I_{out,max}} \]
         \item \textbf{Stability:} The pass transistor and load capacitor form a low-frequency pole. The error amplifier forms another pole. Requires compensation (e.g., ESR of the load capacitor or internal Miller compensation) to ensure Phase Margin $> 0^\circ$.
         \item \textbf{PSRR:} Power Supply Rejection Ratio depends on the loop gain. High loop gain at low frequencies provides good PSRR.
+        \item \textbf{Efficiency (ideal, neglect }$I_Q$\textbf{):}
+        \[ \eta\approx\frac{P_{out}}{P_{in}}\approx\frac{V_{out}}{V_{in}} \]
     \end{itemize}
 
     \subsection{Switches \& Switched-Capacitor Basics}
     \begin{itemize}
         \item Continuous-time inverting amplifier with finite $A_v,\,R_{out}$ shows closed-loop gain error (vs. ideal $-R_2/R_1$): finite output resistance and finite gain both degrade accuracy.
+        \item High-gain approximation (if $A_v\gg1$ and $R_{out}\gg R_2$):
+        \[ \frac{V_{out}}{V_{in}}\approx-\frac{R_2}{R_1}\left(1-\frac{1+R_2/R_1}{A_v}\right) \]
         \item SC charge-transfer concept: each clock cycle moves a packet $\Delta Q=C\,\Delta V$.
         \item Equivalent-resistor intuition:
         \[ I_{avg}=f_s\,C\,(V_1-V_2),\quad R_{eq}=\frac{1}{C f_s} \]
+        \item Two-capacitor sharing ($C_2$ initially uncharged):
+        \[ V_{final}=\frac{C_1}{C_1+C_2}V_{in} \]
         \item For $C_2\gg C_1$, per-cycle output step is small (better linear integration behavior, easier headroom control).
         \item Main switch non-idealities:
         on-resistance/settling, limited input range, aperture uncertainty, charge injection, clock feedthrough, nonlinear junction caps.
@@ -333,8 +360,6 @@
         \item Unlike direct capacitor sharing, integration linearity does not require $C_1\ll C_2$; ratio mainly sets step size/dynamic range.
         \item Parasitic-insensitive implementation:
         use bottom-plate sampling and clock phasing so major parasitic/charge-injection errors become constant or cancelable.
-        \item Charge sharing between two capacitors $C_1$ and $C_2$:
-        \[ V_{out} = \frac{C_1}{C_1 + C_2} V_{in} \]
     \end{itemize}
 
 
@@ -344,9 +369,10 @@
         \item \textbf{Hysteresis:} Positive feedback creates two different threshold voltages ($V_{TH,H}$ and $V_{TH,L}$) to prevent noise-induced multiple transitions.
         \item \textbf{Clocked Comparators (Latches):} Use positive feedback (cross-coupled inverters) activated by a clock to quickly regenerate small signals to full logic levels. Saves static power.
         \item \textbf{Offset Compensation:} Auto-zeroing techniques store the input offset voltage on a capacitor during a reset phase and subtract it during the evaluation phase.
-        \item In sampled-data chains (SC filters, ADC front-ends), voltage is commonly stored on capacitors before decision; this benefits from high input impedance and low static loading.
-        \item Reference quality matters directly for comparator decision threshold; improve PSRR of reference node with opamp loop gain (in-band) and bypass/stabilization capacitors (high-frequency supply noise).
-        \item Practical target: keep reference/noise ripple well below one LSB-equivalent (or required trip-point margin) to avoid decision jitter.
+        \item \textbf{Regeneration time (latch intuition):}
+        \[ t_{reg}\propto \tau\ln\!\left(\frac{V_{logic}}{\Delta V_{in}}\right) \]
+        Smaller input overdrive $\Delta V_{in}$ increases delay and decision jitter.
+        \item Reference noise/ripple must stay well below 1\,LSB; improve with loop gain (in-band PSRR) and bypass caps.
     \end{itemize}
 
 
