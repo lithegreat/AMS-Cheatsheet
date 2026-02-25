@@ -3,8 +3,12 @@ name: CI
 on:
   push:
     branches: [main]
+    paths:
+      - 'AMS.tex'
   pull_request:
     branches: [main]
+    paths:
+      - 'AMS.tex'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
