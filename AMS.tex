@@ -52,6 +52,7 @@
         Weak/mod.\ inv.: $g_m \approx \frac{I_D}{nV_T}$, $n\!\approx\!1\!\ldots\!1.5$, $nV_T\!\approx\!60\,\mathrm{mV}$ at $300\,\mathrm{K}$.
         \item Diode-connected ($V_{DS}\!=\!V_{GS}$): always in sat.\ when ON.
         \item $C_{ox}=\varepsilon_0\varepsilon_{r}/d_{ox}$. NMOS: higher $\mu$. PMOS: lower 1/f noise, no body effect (own n-well), used for low input CM.
+        \item \textbf{CMOS Cross-Section:} NMOS built in P-substrate (with N+ S/D). PMOS built in N-well (with P+ S/D). Both have poly gates over thin oxide.
     \end{itemize}
 
 
@@ -139,6 +140,7 @@
         \item Resistor PVT model:
         \[ R(T)=R_{nom}\big(1+\alpha(T-T_0)\big),\quad \alpha\,[\mathrm{ppm}/^\circ\mathrm{C}] \]
         \item Corner intuition: larger $R\Rightarrow$ larger gain, lower pole frequency.
+        \item \textbf{Cascading Systems:} Total gain $H_{tot}(s) = A(s) \cdot B(s)$. In Bode plots, magnitudes in dB are added ($|A|_{dB} + |B|_{dB}$) and phases are added. To maximize overall broadband gain, the corner frequency $\omega_c$ of cascaded stages should be placed as high as possible.
     \end{itemize}
 
 
@@ -160,9 +162,8 @@
         \item Integrate PSD over band $[f_1,f_2]$:
         \[ \overline{x_n^2}=\int_{f_1}^{f_2}S_x(f)\,df,\quad \int_{f_1}^{f_2}\frac{1}{f}df=\ln\!\frac{f_2}{f_1} \]
         \item Noise design rule: maximize signal-device $g_{m1}$ (large $W/L$), minimize load-device $g_{m2}$ (small $W/L$) under power/headroom constraints.
-        \item Capacitor mismatch (1$\sigma$):
-        \[ \sigma_C/C\approx \frac{K_C}{\sqrt{WL}} \]
-        \item For switched-cap top-plate equations, mismatch in one branch appears as gain/threshold error; increase capacitor area to reduce error.
+        \item \textbf{Capacitor mismatch ($1\sigma$):} $\sigma_C/C\approx \frac{K_C}{\sqrt{WL}}$.
+        \item \textbf{Improve Matching:} Increase capacitor area, use unit capacitors, add dummy elements at edges, use common-centroid or interdigitated layouts, and add shielding.
         \item PMOS transistors show less 1/f noise.
     \end{itemize}
 
@@ -172,6 +173,7 @@
     \subsection{Ideal \& Real Op-Amps (Feedback)}
     \begin{itemize}
         \item \textbf{Ideal Op-Amp:} $A_v \to \infty$, $R_{in} \to \infty$, $R_{out} \to 0$, infinite bandwidth.
+        \item \textbf{Voltage Buffer (Unity-Gain):} Connect output directly to the inverting input ($V_{out} = V_{in-}$).
         \item \textbf{Feedback Equation:} Closed-loop gain $A_{CL} = \frac{A}{1 + A\beta}$, where $A$ is open-loop gain and $\beta$ is the feedback factor.
         \item \textbf{Loop Gain:} $T = A\beta$. Determines accuracy, bandwidth extension, and impedance modification.
         \item \textbf{Gain Error:} $\epsilon \approx \frac{1}{A\beta}$ (for large $A\beta$).
@@ -297,7 +299,7 @@
         \item \textbf{Offset Reduction (Auto-Zeroing):} Samples the offset during a reset phase and subtracts it during the amplification phase. Increases baseband noise due to noise aliasing (folding).
     \end{itemize}
 
-\section{References \& comparators}
+\section{References \& Mixed-Signal Blocks}
 
     \subsection{Bandgap References (Low-Voltage)}
     \begin{itemize}
@@ -320,10 +322,11 @@
     \end{itemize}
 
 
-    \subsection{Linear Voltage Regulator (LDO)}
+    \subsection{Power Management (LDO \& DC-DC)}
     \begin{itemize}
         \item \textbf{Basics:} Uses an error amplifier to compare a fraction of the output voltage with a reference voltage ($V_{ref}$) and drives a pass transistor to regulate $V_{out}$.
         \item \textbf{Output Voltage:} $V_{out} = V_{ref} \cdot (1 + R_1/R_2)$, where $R_1, R_2$ form the feedback divider.
+        \item \textbf{High-Efficiency Step-Down:} For large voltage steps (e.g., $5\text{V} \to 3.1\text{V}$), Inductor-based DC-DC converters are much more efficient than LDOs or charge pumps.
         \item \textbf{Dropout Voltage:} Minimum $V_{DS}$ of the pass transistor required to maintain regulation. PMOS pass devices allow low dropout ($V_{DS,sat}$).
         \item \textbf{Pass-device sizing at }$I_{out,max}$ (PMOS, sat. model):
         \[ \frac{W}{L}\ge \frac{2I_{out,max}}{k_pV_{OV}^2} \]
@@ -377,7 +380,13 @@
         \item Reference noise/ripple must stay well below 1\,LSB; improve with loop gain (in-band PSRR) and bypass caps.
     \end{itemize}
 
-
+    \subsection{Oscillators}
+    \begin{itemize}
+        \item \textbf{Ring Oscillator:} Formed by cascaded inverting stages. To sustain oscillation, the total number of stages $N$ must be an odd number.
+        \item \textbf{Period Calculation:} The time for a signal to complete a full cycle ($0 \to 1 \to 0$) is given by:
+        \[ T_{osc} = 2 \cdot N \cdot T_{delay} \]
+        where $T_{delay}$ is the propagation delay of a single inverter stage.
+    \end{itemize}
 
 % ======================================================================
 % End
